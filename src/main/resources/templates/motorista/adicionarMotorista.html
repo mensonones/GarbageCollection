@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1"/>
+<title>Adicionar Motorista</title>
+</head>
+<body>
+	<h2>Adicionar Motorista</h2>
+	<form th:action="@{/adicionarMotorista}" th:object="${motorista}"  method="post" >
+		Numero Carteira:<input type="text" th:field="*{carteira_motorista}"/><br/>
+		Nome:<input type="text" th:field="*{nome}"/><br/>
+		Idade:<input type="text" th:field="*{idade}"/><br/>
+		<input type="submit" value="ENVIAR"/>
+	</form>
+</body>
+</html>

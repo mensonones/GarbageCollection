@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1"/>
+<title>Insert title here</title>
+<style>
+	table,th,td,tr{
+		border:1px solid black;
+		border-spacing: 0px;
+	}
+	th,td{
+		padding: 10px;
+	}
+</style>
+</head>
+<body>
+<table>
+		<thead>
+			<tr>Carteira Motorista</tr>
+			<tr>Nome Motorista</tr>
+			<tr>Idade</tr>
+		</thead>
+		<tbody>
+			<tr th:each="motorista:${motoristaList}">
+				<td th:text="${motorista.carteira_motorista}"></td>
+				<td th:text="${motorista.nome}"></td>
+				<td th:text="${motorista.idade}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
