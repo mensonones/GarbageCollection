@@ -7,7 +7,6 @@ public class Administrador {
 	@Id
 	private long id_adm;
 	private String login;
-	private String senha;
-	
-	
+    private String senha;
+		
 }

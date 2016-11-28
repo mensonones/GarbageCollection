@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.br.gc.pds.model.Administrador;
+import com.br.gc.pds.model.Motorista;
 import com.br.gc.pds.repository.AdministradorRepository;
 
 @Controller
@@ -17,6 +18,12 @@ public class AdministradorController {
 	@RequestMapping("/home")
 	public String home(Model model){
 		return "home";
+	}
+	
+	@RequestMapping("/adicionarAdmForm")
+	public String adicionarMotoristaForm(Model model){
+		model.addAttribute("adm",new Administrador());
+		return "adm/adicionarAdm";
 	}
 	
 	@RequestMapping("/adicionarAdm")

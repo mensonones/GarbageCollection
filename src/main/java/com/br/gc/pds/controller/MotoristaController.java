@@ -11,8 +11,8 @@ import com.br.gc.pds.model.Motorista;
 import com.br.gc.pds.repository.MotoristaRepository;
 
 @Controller
-public class MotoristaController {
-	
+public class MotoristaController {	
+
 	@Autowired
 	MotoristaRepository motoristaRepository;
 	
