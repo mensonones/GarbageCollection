@@ -34,7 +34,7 @@ public class MotoristaController {
 	}
 	
 	@RequestMapping("/listarMotoristas")
-	public String listarMottoristas(Model model){
+	public String listarMotoristas(Model model){
 		model.addAttribute("motoristaList",motoristaRepository.findAll());
 		return "motorista/listarMotoristas";
 	}
