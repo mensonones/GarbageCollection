@@ -10,5 +10,4 @@ public class Rota {
 	private String destino;
 	
 	
-
 }
