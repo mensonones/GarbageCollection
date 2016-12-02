@@ -3,10 +3,67 @@
 xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   <head>
     <style>
+    .teste ul, .teste li{
+    margin:0;
+    padding:0;
+    }
+    
+    .teste ul {
+	background: #30A6E6;
+	list-style: none;
+	width: 100%;
+}
+
+.teste li {
+	float: left;
+	position: relative;
+	width:auto;
+}
+.teste a {
+	background: #1ab188;
+	color: #FFFFFF;
+	display: block;
+	font: bold 12px/20px sans-serif;
+	padding: 10px 25px;
+	text-align: center;
+	text-decoration: none;
+	-webkit-transition: all .25s ease;
+	-moz-transition: all .25s ease;
+	-ms-transition: all .25s ease;
+	-o-transition: all .25s ease;
+	transition: all .25s ease;
+}
+.teste li:hover a {
+	background: #000000;
+}
+#submenu {
+	left: 0;
+	opacity: 0;
+	position: absolute;
+	top: 35px;
+	visibility: hidden;
+	z-index: 1;
+}
+li:hover ul#submenu {
+	opacity: 1;
+	top: 40px;	
+	visibility: visible;
+}
+#submenu li {
+	float: none;
+	width: 100%;
+}
+#submenu a:hover {
+	background: #DF4B05;
+}
+#submenu a {
+	background-color:#000000;
+}
+    
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 100%;
+        height: 70%;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -18,6 +75,21 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
   </head>
   <body>
     <div id="map"></div>
+    <div class="teste">
+    <ul>
+    <li><a href="#">Teste</a></li>
+    <li><a href="#">Teste</a></li>
+    <li><a href="#">Teste</a>
+      <ul id="submenu">
+        <li><a href="#">Teste</a></li>
+        <li><a href="#">Teste</a></li>
+        <li><a href="#">Teste</a></li>
+      </ul>
+    </li>
+    <li><a href="#">News</a></li>
+    <li><a href="#">Contact Us</a></li>
+  </ul>
+    </div>
     <script>
   //<![CDATA[
       var map;
