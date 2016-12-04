@@ -36,4 +36,17 @@ public class RotasController {
 	public String home(){
 		return "home";
 	}
+	
+	@RequestMapping(value="/relatorio", method=RequestMethod.GET)
+	public String geraRelatorio(){
+		return "relatorio";
+	}
+	@RequestMapping(value="/cadastro", method=RequestMethod.GET)
+	public String cadastrarCaminhao(){
+		return "cadastroCaminhao";
+	}
+	@RequestMapping(value="/rotas", method=RequestMethod.GET)
+	public String rotas(){
+		return "rotas";
+	}
 }
