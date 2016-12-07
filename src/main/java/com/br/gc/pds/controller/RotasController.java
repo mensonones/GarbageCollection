@@ -2,10 +2,23 @@ package com.br.gc.pds.controller;
 
 
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.itextpdf.text.pdf.PdfReader;
 
 @Controller
 public class RotasController {
@@ -38,8 +51,25 @@ public class RotasController {
 	}
 	
 	@RequestMapping(value="/relatorio", method=RequestMethod.GET)
-	public String geraRelatorio(){
-		return "relatorio";
+	public void geraRelatorio(HttpServletResponse response) throws IOException{
+		File file = new File("C:/pdf/EXTERNO.pdf");
+		InputStream is = new FileInputStream(file);
+		
+		 // MIME type of the file
+        response.setContentType("application/octet-stream");
+        // Response header
+        response.setHeader("Content-Disposition", "attachment; filename=\""
+                + file.getName() + "\"");
+        // Read from the file and write into the response
+        OutputStream os = response.getOutputStream();
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = is.read(buffer)) != -1) {
+            os.write(buffer, 0, len);
+        }
+        os.flush();
+        os.close();
+        is.close();
 	}
 	@RequestMapping(value="/cadastro", method=RequestMethod.GET)
 	public String cadastrarCaminhao(){
