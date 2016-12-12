@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+ <head>
+  <title>GarbageCollection - Home</title>
+  <meta charset="utf-8"></meta>
+ <style>
+    
+.teste{
+    margin: 0 auto;
+    width: 36%; 
+    }
+.teste ul, .teste li{
+    margin:0 auto;
+    padding:0;
+    }
+.teste ul {
+	background: #DF4B05;
+	list-style: none;
+	width: 100%;
+}
+.teste li {
+	float: left;
+	position: relative;
+	width:auto;
+}
+.teste a {
+	background: #1ab188;
+	color: #FFFFFF;
+	display: block;
+	font: bold 12px/20px sans-serif;
+	padding: 10px 25px;
+	text-align: center;
+	text-decoration: none;
+	-webkit-transition: all .25s ease;
+	-moz-transition: all .25s ease;
+	-ms-transition: all .25s ease;
+	-o-transition: all .25s ease;
+	transition: all .25s ease;
+}
+.teste li:hover a {
+	background: #3399ff;
+}
+#submenu {
+	left: 0;
+	opacity: 0;
+	position: absolute;
+	top: 35px;
+	visibility: hidden;
+	z-index: 1;
+}
+li:hover ul#submenu {
+	opacity: 1;
+	top: 40px;	
+	visibility: visible;
+}
+#submenu li {
+	float: none;
+	width: 100%;
+}
+#submenu a:hover {
+	background: #3399ff;
+}
+#submenu a {
+	background-color:#000000;
+}
+    
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 70%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-image: url(http://acetravels.com/np/images/green/green_footer.jpg);
+        background-position: center;
+        background-size: 90%;
+        
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div class="teste">
+    <ul>
+    <li> <a th:href="@{/cadastrarCaminhaoForm}">Cadastrar Caminhão</a> </li>
+    <li> <a th:href="@{/relatorio}">Visualizar Relatórios de Coleta</a> </li>
+    <li> <a th:href="@{/listarCaminhao}">Gerar Rota</a></li>
+    <li> <a th:href="@{/logout}">Sair</a> </li>
+  </ul>
+    </div>
+    <script>
+  //<![CDATA[
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          //center: new google.maps.LatLng(2.8,-187.3),
+          center: new google.maps.LatLng(-4.9662345,-39.0137385,15),
+          mapTypeId: 'terrain'
+        });
+
+        // Create a <script> tag and set the USGS URL as the source.
+        var script = document.createElement('script');
+        // This example uses a local copy of the GeoJSON stored at
+        // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
+        script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
+        document.getElementsByTagName('head')[0].appendChild(script);
+      }
+
+      // Loop through the results array and place a marker for each
+      // set of coordinates.
+      window.eqfeed_callback = function(results) {
+        for (var i = 0; i < results.features.length; i++) {
+          var coords = results.features[i].geometry.coordinates;
+          var latLng = new google.maps.LatLng(coords[1],coords[0]);
+          var marker = new google.maps.Marker({
+            position: latLng,
+            map: map
+          });
+        }
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key= AIzaSyC1Em6TXod4hOD4UjutFOiB8X7IRwK1H_c&callback=initMap">
+  //]]>
+    </script>
+  </body>
+</html>
