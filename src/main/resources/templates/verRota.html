@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"></meta>
+<title>Ver rota</title>
+</head>
+<body>
+	<div class="container">
+  <h2>Rota</h2>
+  <div class="container" th:each="rota : ${rotas}">
+  	<p class="bg-primary" th:text="${rota.enderecoOrigem}"></p><br/>
+  	<p class="bg-success" th:text="${rota.enderecoDestino}"></p><br/>
+  	<div class="container" th:each="passo : ${rota.getPassoList()}">
+  		<p th:utext="${passo.instrucao} + ' por ' + ${passo.distancia}"></p><br/>
+  	</div>
+  </div>
+</div>
+</body>
+</html>

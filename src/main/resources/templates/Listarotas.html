@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8"></meta>
+<title>Rotas</title>
+<link href="/src/main/resources/static/css/rota.css" rel="stylesheet" type="text/css"></link>
+<link rel="stylesheet" type="text/css" th:href="@{/css/rota.css}" media="screen"></link>
+</head>
+<body>
+	<table class="rota-table">
+          <thead>
+            <tr>
+              <th>Id Caminhão</th>
+              <th>Placa</th>
+              <th>Status Coleta</th>              
+              <th>Action</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <tr th:each="caminhao : ${listaCaminhao}">
+              <td th:text="${caminhao.id_caminhao}"></td>
+              <td th:text="${caminhao.placa}"></td>
+              <td th:text="${caminhao.statusCaminhaColeta}"></td>
+              <td><a th:href="@{'/gerarColeta/'+${caminhao.id_caminhao}}">Gerar Rota</a>
+              <a th:href="@{#}">Cancelar Rota</a></td>
+            </tr>
+          </tbody>
+        </table>
+</body>
+</html>

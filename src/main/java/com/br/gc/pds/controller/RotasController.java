@@ -75,8 +75,13 @@ public class RotasController {
 	public String cadastrarCaminhao(){
 		return "cadastroCaminhao";
 	}
-	@RequestMapping(value="/rotas", method=RequestMethod.GET)
+	@RequestMapping(value="/listarotas", method=RequestMethod.GET)
 	public String rotas(){
-		return "rotas";
+		return "Listarotas";
+	}
+	
+	@RequestMapping(value="/verRota", method=RequestMethod.GET)
+	public String Vrota(){
+		return "verRota";
 	}
 }
