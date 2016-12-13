@@ -22,7 +22,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
         
         <div id="login">   
           <h1>GarbageCollection - Login</h1>
-          <p th:if="${loginError}" class="error">Wrong user or password</p>
+          <p th:if="${loginError}">Login ou Senha Incorreta</p>
           <form action="#" th:action="@{/login}" method="post">
           
             <div class="field-wrap">
@@ -37,7 +37,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
               Senha<span class="req">*</span>
             </label>
             
-            <input id="password" name="password" type="password" autocomplete="off"/>
+            <input id="password" name="senha" type="password" autocomplete="off"/>
 			
           </div>
           

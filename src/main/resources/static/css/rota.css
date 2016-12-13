@@ -1,0 +1,41 @@
+body {
+  
+  background: #c1bdba;
+  background-image: url(http://www.greenprocess.com.br/wp-content/themes/green/img/fundo-anima.jpg);
+  background-repeat: no-repeat;
+  
+}
+
+.rota-table {
+	position:absolute;
+    left: 30%;
+    top: 20%;
+    border: solid 1px #DDEEEE;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font: normal 15px Arial, sans-serif;
+}
+.rota-table thead th {
+    background-color: #1ab188;
+    border: solid 1px #1ab188;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+   
+}
+.rota-table tbody td {
+    border: solid 3px #DDEEEE;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+}
+.rota-table-zebra tbody tr:nth-child(odd) {
+    background-color: #fff;
+}
+.rota-table-zebra tbody tr:nth-child(even) {
+    background-color: #EEF7EE;
+}
+.rota-table-horizontal tbody td {
+    border-left: none;
+    border-right: none;
+}

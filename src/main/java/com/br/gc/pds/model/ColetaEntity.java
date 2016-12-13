@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -22,15 +23,16 @@ public class ColetaEntity {
 	private Long id;
 	@OneToMany(mappedBy = "coleta", cascade = CascadeType.REMOVE)
 	private List<LixeiraEntity> lixeiras = new ArrayList<LixeiraEntity>();
-	//private Caminhao caminhao;
+	@ManyToOne
+	private Caminhao caminhao;
 
-	/*public Caminhao getCaminhao() {
+	public Caminhao getCaminhao() {
 		return caminhao;
 	}
 
 	public void setCaminhao(Caminhao caminhao) {
 		this.caminhao = caminhao;
-	}*/
+	}
 
 	public Long getId() {
 		return id;

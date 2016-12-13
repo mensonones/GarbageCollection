@@ -2,11 +2,13 @@ package com.br.gc.pds.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.br.gc.pds.util.StatusCaminhaoCapacidade;
@@ -24,7 +26,8 @@ public class Caminhao {
 	private StatusCaminhaoCapacidade statusCaminhaoCapacidade;
 	private StatusCaminhaoColeta statusCaminhaColeta;
 	
-	//private List<ColetaEntity> coletas;
+	@OneToMany(mappedBy="caminhao",cascade= CascadeType.REMOVE)
+	private List<ColetaEntity> coletas;
 
 	public Long getId_caminhao() {
 		return id_caminhao;
@@ -66,11 +69,11 @@ public class Caminhao {
 		this.statusCaminhaColeta = statusCaminhaColeta;
 	}
 
-	/*public List<ColetaEntity> getColetas() {
+	public List<ColetaEntity> getColetas() {
 		return coletas;
 	}
 
 	public void setColetas(List<ColetaEntity> coletas) {
 		this.coletas = coletas;
-	}*/
+	}
 }

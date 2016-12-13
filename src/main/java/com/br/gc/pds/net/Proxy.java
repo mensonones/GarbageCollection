@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hamcrest.StringDescription;
 import org.springframework.stereotype.Service;
 
 import com.br.gc.pds.factory.MensagemFactory;
@@ -44,25 +45,25 @@ public class Proxy {
 	// Metodo Responsavel por solicitar calculo da rota de coleta de lixo
 	// A rota é criada apartir de lixeiras que estão cheias e que possuem
 	// StatusColetas como LIVRE
-	public List<Rota> calcularRota(List<LixeiraEntity> lixeiras) {
+	public List<Rota> calcularRota(List<String> pontosLixeira,List<LixeiraEntity> lixeiras) {
 		mensagemFactory = new MensagemFactory();
-		List<String> pontosLixeira = new ArrayList<>();
-		//List<String> pontosAlterarStatusColeta = new ArrayList<>();
+		
+		List<String> pontosAlterarStatusColeta = new ArrayList<String>();
+		
+		
 
-		//pontosLixeira.add(ConstantesPontosRota.EMPRESA);
-
-		for (LixeiraEntity lixeira : lixeiras) {
-			pontosLixeira.add(lixeira.getLocalizacao());
-			//pontosAlterarStatusColeta.add(String.valueOf(lixeira.getId()));
+		for (LixeiraEntity ponto : lixeiras) {
+			pontosAlterarStatusColeta.add(String.valueOf(ponto.getId()));
 		}
 
-		//pontosLixeira.add(ConstantesPontosRota.LIXAO);
+		pontosLixeira.add(ConstantesPontosRota.LIXAO);
+		
 		mensagem = mensagemFactory.empacotar("Rota", "calcularRota", pontosLixeira);
 
 		try {
 			Mensagem resposta = Mensagem.parseFrom(doOperations(mensagem));
 			List<Rota> listaRota = ListaRota.parseFrom(resposta.getArgumentos(0)).getRotaList();
-			//alterarStatusColeta("0", pontosAlterarStatusColeta);
+			alterarStatusColeta("0", pontosAlterarStatusColeta);
 			return listaRota;
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
@@ -109,7 +110,7 @@ public class Proxy {
 	private byte[] doOperations(Mensagem mensagem) {
 		try {
 
-			this.cliente = new TCPClienteBuilder().serverHost("127.0.0.1").serverPort(2086).build();
+			this.cliente = new TCPClienteBuilder().serverHost("127.0.0.1").serverPort(2068).build();
 			cliente.sendRequest(mensagem);
 			return cliente.getResponse();
 

@@ -6,26 +6,26 @@ import com.br.gc.pds.model.Caminhao;
 import com.br.gc.pds.model.ColetaEntity;
 import com.br.gc.pds.model.LixeiraEntity;
 import com.br.gc.pds.model.Lixeiras.Lixeira;
-import com.br.gc.pds.service.LixeiraService;
 
 public class ColetaFactory {
-	
+
 	private LixeiraFactory lixeiraFactory;
-	
-	public ColetaEntity factoryColeta(List<Lixeira> lixeirasProtocol,Caminhao caminhao){
+	private ColetaEntity coleta;
+
+	public ColetaEntity factoryLixeirasColeta(List<Lixeira> lixeirasProtocol, Caminhao caminhao) {
 		lixeiraFactory = new LixeiraFactory();
-		if(lixeirasProtocol != null){
-			ColetaEntity coleta = new ColetaEntity();
-			for (Lixeira lixeiraProtocol : lixeirasProtocol) {
-				if(lixeiraProtocol.getStatusCapacidade().equals(Lixeira.StatusCapacidade.CHEIA) && lixeiraProtocol.getStatusColeta().equals(Lixeira.StatusColeta.LIVRE)){
-					LixeiraEntity lixeira = lixeiraFactory.factoryLixeira(lixeiraProtocol);
-					coleta.getLixeiras().add(lixeira);
-				}
-			}
-			//coleta.setCaminhao(caminhao);
-			return coleta;
-		}
+		coleta = new ColetaEntity();
+		for (Lixeira lixeiraProtocol : lixeirasProtocol) {
+			if (lixeiraProtocol.getStatusCapacidade().equals(Lixeira.StatusCapacidade.CHEIA)
+					&& lixeiraProtocol.getStatusColeta().equals(Lixeira.StatusColeta.LIVRE)
+					&& caminhao.getCapacidadeTotal() - lixeiraProtocol.getPeso() <= caminhao.getCapacidadeTotal()) {
 		
-		return null;
+				LixeiraEntity lixeira = lixeiraFactory.factoryLixeira(lixeiraProtocol);
+				caminhao.setCapacidadeTotal(caminhao.getCapacidadeTotal() - lixeiraProtocol.getPeso());
+				coleta.getLixeiras().add(lixeira);
+			}
+		}
+
+		return coleta;
 	}
 }
