@@ -11,17 +11,18 @@ public class ColetaFactory {
 
 	private LixeiraFactory lixeiraFactory;
 	private ColetaEntity coleta;
-
+	
 	public ColetaEntity factoryLixeirasColeta(List<Lixeira> lixeirasProtocol, Caminhao caminhao) {
 		lixeiraFactory = new LixeiraFactory();
+		double limiteCarga = caminhao.getCapacidadeTotal();
 		coleta = new ColetaEntity();
 		for (Lixeira lixeiraProtocol : lixeirasProtocol) {
 			if (lixeiraProtocol.getStatusCapacidade().equals(Lixeira.StatusCapacidade.CHEIA)
 					&& lixeiraProtocol.getStatusColeta().equals(Lixeira.StatusColeta.LIVRE)
-					&& caminhao.getCapacidadeTotal() - lixeiraProtocol.getPeso() <= caminhao.getCapacidadeTotal()) {
-		
+					&& limiteCarga - lixeiraProtocol.getPeso() >= 0) {
+				
 				LixeiraEntity lixeira = lixeiraFactory.factoryLixeira(lixeiraProtocol);
-				caminhao.setCapacidadeTotal(caminhao.getCapacidadeTotal() - lixeiraProtocol.getPeso());
+				limiteCarga = limiteCarga - lixeiraProtocol.getPeso();
 				coleta.getLixeiras().add(lixeira);
 			}
 		}

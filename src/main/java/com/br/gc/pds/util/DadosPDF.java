@@ -25,7 +25,7 @@ public class DadosPDF {
 	public void gerarRelatorioRota(ColetaEntity coleta,List<Rota> rotas) {
 		TratadorInstrucao tratador = new TratadorInstrucao();
 		try {
-			nomePDF = "Coleta - "+coleta.getId();
+			nomePDF = "Coleta - "+coleta.getIdColeta();
 			String endereco = "C:/Users/Carlos/Desktop/";
 			PdfWriter.getInstance(document, new FileOutputStream(endereco + nomePDF + ".PDF"));
 			document.open();

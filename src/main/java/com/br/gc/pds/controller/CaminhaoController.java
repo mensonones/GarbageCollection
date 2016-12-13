@@ -27,7 +27,7 @@ public class CaminhaoController {
 	
 	@RequestMapping(value = "/cadastrarCaminhao", method = RequestMethod.POST)
 	public String cadastrarCaminhao(@ModelAttribute Caminhao caminhao){
-		caminhao.setStatusCaminhaColeta(StatusCaminhaoColeta.ROTA);
+		caminhao.setStatusCaminhaColeta(StatusCaminhaoColeta.LIVRE);
 		caminhao.setStatusCaminhaoCapacidade(StatusCaminhaoCapacidade.VAZIO);
 		caminhaoService.cadastrarCaminha(caminhao);
 		return "redirect:/home";

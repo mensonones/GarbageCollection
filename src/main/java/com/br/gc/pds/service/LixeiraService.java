@@ -16,4 +16,4 @@ public class LixeiraService {
 		this.lixeiraRepository.save(lixeira);
 	}
 	
-}
+} 

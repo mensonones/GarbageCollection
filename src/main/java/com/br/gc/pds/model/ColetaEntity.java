@@ -3,15 +3,19 @@ package com.br.gc.pds.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.br.gc.pds.util.ValorStatusColeta;
 
 @Entity
 @Table(name = "coleta")
@@ -20,11 +24,21 @@ public class ColetaEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "coleta_id")
-	private Long id;
-	@OneToMany(mappedBy = "coleta", cascade = CascadeType.REMOVE)
+	private Long idColeta;
+	@ManyToMany(fetch=FetchType.LAZY)
+	@JoinTable(name="COLETA_LIXEIRA",joinColumns=@JoinColumn(name="coleta_id",referencedColumnName="coleta_id"),inverseJoinColumns=@JoinColumn(name="lixeira_id",referencedColumnName="lixeira_id"))
 	private List<LixeiraEntity> lixeiras = new ArrayList<LixeiraEntity>();
 	@ManyToOne
 	private Caminhao caminhao;
+	private ValorStatusColeta statusColeta;
+
+	public ValorStatusColeta getStatusColeta() {
+		return statusColeta;
+	}
+
+	public void setStatusColeta(ValorStatusColeta statusColeta) {
+		this.statusColeta = statusColeta;
+	}
 
 	public Caminhao getCaminhao() {
 		return caminhao;
@@ -34,12 +48,12 @@ public class ColetaEntity {
 		this.caminhao = caminhao;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getIdColeta() {
+		return idColeta;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdColeta(Long idColeta) {
+		this.idColeta = idColeta;
 	}
 
 	public List<LixeiraEntity> getLixeiras() {

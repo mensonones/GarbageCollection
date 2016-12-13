@@ -5,7 +5,6 @@ import com.br.gc.pds.model.Lixeiras.Lixeira;
 
 public class LixeiraFactory {
 	private LixeiraEntity lixeiraEntity;
-
 	public LixeiraEntity factoryLixeira(Lixeira lixeiraProtocol) {
 		lixeiraEntity = new LixeiraEntity();
 
@@ -14,7 +13,6 @@ public class LixeiraFactory {
 		lixeiraEntity.setPeso(lixeiraProtocol.getPeso());
 		lixeiraEntity.setStatusCapacidade(lixeiraProtocol.getStatusCapacidade());
 		lixeiraEntity.setStatusColeta(lixeiraProtocol.getStatusColeta());
-
 		return lixeiraEntity;
 	}
 }

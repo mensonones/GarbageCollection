@@ -12,19 +12,20 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 	<table class="rota-table">
           <thead>
             <tr>
-              <th>Id Caminhão</th>
-              <th>Placa</th>
-              <th>Status Caminhão</th>              
+              <th>Id Coleta</th>
+              <th>Caminhao</th>
+              <th>Status Coleta</th>              
               <th>Action</th>
             </tr>
           </thead>
           
           <tbody>
-            <tr th:each="caminhao : ${listaCaminhao}">
-              <td th:text="${caminhao.id_caminhao}"></td>
-              <td th:text="${caminhao.placa}"></td>
-              <td th:text="${caminhao.statusCaminhaColeta}"></td>
-              <td><a th:if="${caminhao.statusCaminhaColeta == livre}" th:href="@{'/gerarColeta/'+${caminhao.id_caminhao}}" >Gerar Rota</a></td>
+            <tr th:each="coleta:${coletas}">
+              <td th:text="${coleta.idColeta}"></td>
+              <td th:text="${coleta.caminhao.placa}"></td>
+              <td th:text="${coleta.statusColeta}"></td>
+              <td><a th:if="${coleta.statusColeta == andamento }" th:href="@{'/alterarStatusColeta/'+${coleta.idColeta}+'+'+ completo}">Concluir Coleta</a>
+              <a th:if="${coleta.statusColeta == andamento }" th:href="@{'/alterarStatusColeta/'+${coleta.idColeta}+'+'+ cancelado}">Cancelar Coleta</a></td>
             </tr>
           </tbody>
         </table>

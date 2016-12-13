@@ -5,7 +5,7 @@ public class TratadorInstrucao {
 		instrucao = instrucao.replaceAll("<b>","");
 		instrucao = instrucao.replaceAll("</b>","");
 		instrucao = instrucao.replaceAll("<div","");
-		instrucao = instrucao.replaceAll(":0.9em ","");
+		instrucao = instrucao.replaceAll(":0.9em","");
 		instrucao = instrucao.replaceAll("style=","");
 		instrucao = instrucao.replaceAll("font-size","");
 		instrucao = instrucao.replaceAll("</div>","");

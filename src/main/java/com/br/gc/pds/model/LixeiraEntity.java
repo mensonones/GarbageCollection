@@ -1,9 +1,12 @@
 package com.br.gc.pds.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.br.gc.pds.model.Lixeiras.Lixeira.StatusCapacidade;
@@ -26,8 +29,8 @@ public class LixeiraEntity {
 	@Column(name="status_coleta")
 	private StatusColeta statusColeta;
 	
-	@ManyToOne
-	private ColetaEntity coleta;
+	@ManyToMany(mappedBy="lixeiras",fetch=FetchType.LAZY)
+	private List<ColetaEntity> coletas;
 	
 	public Long getId() {
 		return id;
@@ -59,11 +62,11 @@ public class LixeiraEntity {
 	public void setStatusColeta(StatusColeta statusColeta) {
 		this.statusColeta = statusColeta;
 	}
-	public ColetaEntity getColeta() {
-		return coleta;
+	public List<ColetaEntity> getColeta() {
+		return coletas;
 	}
-	public void setColeta(ColetaEntity coleta) {
-		this.coleta = coleta;
+	public void setColeta(List<ColetaEntity> coletas) {
+		this.coletas = coletas;
 	}
 	
 	
