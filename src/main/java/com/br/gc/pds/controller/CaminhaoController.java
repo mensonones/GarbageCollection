@@ -1,10 +1,13 @@
 package com.br.gc.pds.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.br.gc.pds.model.Caminhao;
 import com.br.gc.pds.service.CaminhaoService;
@@ -28,8 +31,15 @@ public class CaminhaoController {
 	public String cadastrarCaminhao(@ModelAttribute Caminhao caminhao){
 		caminhao.setStatusCaminhaColeta(StatusCaminhaoColeta.LIVRE);
 		caminhao.setStatusCaminhaoCapacidade(StatusCaminhaoCapacidade.VAZIO);
-		caminhaoService.cadastrarCaminha(caminhao);
+		caminhaoService.cadastrarCaminhao(caminhao);
 		return "redirect:/home";
 	}
-		
+	
+	@RequestMapping(value = "/listarCaminhao", method = RequestMethod.GET)
+	public String listarCaminhao(Model model) {
+		List<Caminhao> listaCaminhao = caminhaoService.listarCaminhao();
+		model.addAttribute("listaCaminhao", listaCaminhao);
+		model.addAttribute("livre", StatusCaminhaoColeta.LIVRE);
+		return "caminhao/listaCaminhao";
+	}	
 }

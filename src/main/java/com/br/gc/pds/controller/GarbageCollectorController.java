@@ -1,19 +1,11 @@
 package com.br.gc.pds.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +18,11 @@ public class GarbageCollectorController {
 	@Autowired
 	Environment env;
 	
+	
+	@RequestMapping(value = "/home")
+	public String home() {
+		return "home";
+	}
 	
 	@RequestMapping(value="/",method= RequestMethod.GET)
 	public String loginForm(){
@@ -48,23 +45,5 @@ public class GarbageCollectorController {
 		model.addAttribute("loginError",true);
 		return "administrador/loginForm";
 	}
-	@RequestMapping(value="/Coleta-{id}.PDF")
-	public void visualizarRota(@PathVariable Long id,HttpServletResponse response) throws IOException{
-		String path = "C:/Users/Carlos/git/GarbageCollection/src/main/resources/relatorios/coletas/Coleta-"+id+".PDF";
-		Path file = Paths.get(path);
-		response.setContentType("application/pdf");
-		response.addHeader("Content-Disposition", "inline;filename="+path);
-		Files.copy(file,response.getOutputStream());
-		response.getOutputStream().flush();
-	}
 	
-	@RequestMapping(value="/verRelatorio" , method=RequestMethod.GET)
-	public void verRelatorio(HttpServletResponse response) throws IOException{
-		String path = "C:/Users/Carlos/git/GarbageCollection/src/main/resources/relatorios/coletas/RelatorioColeta.PDF";
-		Path file = Paths.get(path);
-		response.setContentType("application/pdf");
-		response.addHeader("Content-Disposition", "inline;filename=RelatorioColeta");
-		Files.copy(file,response.getOutputStream());
-		response.getOutputStream().flush();
-	}
 }

@@ -1,9 +1,15 @@
 package com.br.gc.pds.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,14 +78,6 @@ public class ColetaController {
 		return "coleta/listarColeta";
 	}
 
-	@RequestMapping(value = "/listarCaminhao", method = RequestMethod.GET)
-	public String listarCaminhao(Model model) {
-		List<Caminhao> listaCaminhao = caminhaoService.listarCaminhao();
-		model.addAttribute("listaCaminhao", listaCaminhao);
-		model.addAttribute("livre", StatusCaminhaoColeta.LIVRE);
-		return "caminhao/listaCaminhao";
-	}
-
 	@RequestMapping(value = "/gerarColeta/{id_caminhao}", method = RequestMethod.GET)
 	public String gerarColeta(@PathVariable Long id_caminhao, Model model) throws InvalidProtocolBufferException {
 		proxy = new Proxy();
@@ -118,5 +116,33 @@ public class ColetaController {
 		relatorio.gerarRelatorioRota(coleta, melhorRota);
 		model.addAttribute("rotas", melhorRota);
 		return "rota/verRota";
+	}
+	
+	@RequestMapping(value="/relatorioRota-{id}+{opcao}")
+	public void relatorioRota(@PathVariable("id") Long id,@PathVariable("opcao") String opcao ,HttpServletResponse response) throws IOException{
+		String path = "C:/Users/Carlos/git/GarbageCollection/src/main/resources/relatorios/coletas/Coleta-"+id+".PDF";
+		if(opcao.equals("visualizar")){
+			Path file = Paths.get(path);
+			response.setContentType("application/pdf");
+			response.addHeader("Content-Disposition", "inline;filename=Coleta-"+id+".PDF");
+			Files.copy(file,response.getOutputStream());
+			response.getOutputStream().flush();
+		}else{
+			Path file = Paths.get(path);
+			response.setContentType("application/pdf");
+			response.addHeader("Content-Disposition", "attachment;filename=Coleta-"+id+".PDF");
+			Files.copy(file,response.getOutputStream());
+			response.getOutputStream().flush();
+
+		}
+		
+	}
+	
+	@RequestMapping(value="/verRelatorio" , method=RequestMethod.GET)
+	public String verRelatorio(Model model) throws IOException{
+		List<ColetaEntity> coletas = coletaService.listar();
+		model.addAttribute("coletas", coletas);
+		model.addAttribute("completo", ValorStatusColeta.COMPLETO);
+		return"relatorio/verRelatorio";
 	}
 }

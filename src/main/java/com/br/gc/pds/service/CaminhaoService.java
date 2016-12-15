@@ -14,7 +14,7 @@ public class CaminhaoService {
 	@Autowired
 	CaminhaoRepository caminhaoRepository;
 	
-	public void cadastrarCaminha(Caminhao caminhao){
+	public void cadastrarCaminhao(Caminhao caminhao){
 		this.caminhaoRepository.save(caminhao);
 	}
 	
