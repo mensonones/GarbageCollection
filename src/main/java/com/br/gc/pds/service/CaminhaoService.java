@@ -22,7 +22,7 @@ public class CaminhaoService {
 		return this.caminhaoRepository.findOne(id);
 	}
 	
-	public void deletarColeta(Caminhao caminhao){
+	public void deletarCaminhao(Caminhao caminhao){
 		this.caminhaoRepository.delete(caminhao);
 	}
 	

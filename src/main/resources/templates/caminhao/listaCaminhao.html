@@ -24,7 +24,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
               <td th:text="${caminhao.id_caminhao}"></td>
               <td th:text="${caminhao.placa}"></td>
               <td th:text="${caminhao.statusCaminhaColeta}"></td>
-              <td><a th:if="${caminhao.statusCaminhaColeta == livre}" th:href="@{'/gerarColeta/'+${caminhao.id_caminhao}}" >Gerar Rota</a></td>
+              <td>
+              	<a th:if="${caminhao.statusCaminhaColeta == livre}" th:href="@{'/gerarColeta/'+${caminhao.id_caminhao}}" >Gerar Rota</a>
+              	<a th:if="${caminhao.statusCaminhaColeta == livre}" th:href="@{'/excluirCaminhao/'+${caminhao.id_caminhao}}">Excluir Caminnhão</a>
+              </td>
             </tr>
           </tbody>
         </table>

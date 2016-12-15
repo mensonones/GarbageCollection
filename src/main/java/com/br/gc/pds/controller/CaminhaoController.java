@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -33,6 +34,13 @@ public class CaminhaoController {
 		caminhao.setStatusCaminhaoCapacidade(StatusCaminhaoCapacidade.VAZIO);
 		caminhaoService.cadastrarCaminhao(caminhao);
 		return "redirect:/home";
+	}
+	
+	@RequestMapping(value="/excluirCaminhao/{id_caminhao}")
+	public String excluirCaminhao(@PathVariable("id_caminhao") Long id_caminhao){
+		Caminhao caminhao = caminhaoService.buscarCaminhao(id_caminhao);
+		caminhaoService.deletarCaminhao(caminhao);
+		return"redirect:/listarCaminhao";
 	}
 	
 	@RequestMapping(value = "/listarCaminhao", method = RequestMethod.GET)
