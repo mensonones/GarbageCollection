@@ -13,7 +13,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 public class StatusCanceladoColeta implements ModificadorStatusColeta{
 
 	@Override
-	public ColetaEntity atulaizarStatusColeta(Proxy proxy, ColetaEntity coleta) throws InvalidProtocolBufferException {
+	public void atulaizarStatusColeta(Proxy proxy, ColetaEntity coleta,ColetaService coletaService) throws InvalidProtocolBufferException {
 		coleta.getCaminhao().setStatusCaminhaColeta(StatusCaminhaoColeta.LIVRE);
 		coleta.setStatusColeta(ValorStatusColeta.CANCELADO);
 		
@@ -24,7 +24,7 @@ public class StatusCanceladoColeta implements ModificadorStatusColeta{
 		}
 
 		proxy.alterarStatusColeta("1", pontosAlterarStatus);
-		return coleta;
+		coletaService.salvar(coleta);
 	}
 
 }

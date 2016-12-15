@@ -38,7 +38,7 @@ public class RotasController {
 		return "logout";
 	}
 
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	@RequestMapping(value = "/home")
 	public String home() {
 		return "home";
 	}

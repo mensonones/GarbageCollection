@@ -31,6 +31,7 @@ public class ColetaEntity {
 	@ManyToOne
 	private Caminhao caminhao;
 	private ValorStatusColeta statusColeta;
+	private String dataColeta;
 
 	public ValorStatusColeta getStatusColeta() {
 		return statusColeta;
@@ -62,6 +63,14 @@ public class ColetaEntity {
 
 	public void setLixeiras(List<LixeiraEntity> lixeiras) {
 		this.lixeiras = lixeiras;
+	}
+
+	public String getDataColeta() {
+		return dataColeta;
+	}
+
+	public void setDataColeta(String dataColeta) {
+		this.dataColeta = dataColeta;
 	}
 
 }

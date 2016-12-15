@@ -6,7 +6,7 @@ import com.br.gc.pds.net.Proxy;
 import com.br.gc.pds.util.Distancia;
 import com.google.protobuf.InvalidProtocolBufferException;
 
-public class RotaFactory {
+public class GeradorRota {
 
 	public List<String> gerarRota(List<String> lixeiras) throws InvalidProtocolBufferException {
 		Proxy proxy = new Proxy();

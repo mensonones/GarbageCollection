@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8"></meta>
+<title>Rotas</title>
+<link href="/src/main/resources/static/css/rota.css" rel="stylesheet" type="text/css"></link>
+<link rel="stylesheet" type="text/css" th:href="@{/css/rota.css}" media="screen"></link>
+</head>
+<body>
+	<table class="rota-table">
+          <thead>
+            <tr>
+              <th>Id Coleta</th>
+              <th>Data Coleta</th>
+              <th>Link</th>              
+              <th>Action</th>
+            </tr>
+          </thead>
+          
+          <tbody>
+            <tr th:each="coleta:${coletas}">
+              <td th:text="${coleta.idColeta}"></td>
+              <td th:text="${coleta.caminhao.placa}"></td>
+              <td th:text="${coleta.statusColeta}"></td>
+              <td><a th:if="${coleta.statusColeta == andamento }" th:href="@{'/alterarStatusColeta/'+${coleta.idColeta}+'+'+ completo}">Concluir Coleta</a>
+              <a th:if="${coleta.statusColeta == andamento }" th:href="@{'/alterarStatusColeta/'+${coleta.idColeta}+'+'+ cancelado}">Cancelar Coleta</a></td>
+            </tr>
+          </tbody>
+        </table>
+</body>
+</html>

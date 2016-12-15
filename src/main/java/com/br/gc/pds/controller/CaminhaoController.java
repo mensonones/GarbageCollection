@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.br.gc.pds.model.Caminhao;
 import com.br.gc.pds.service.CaminhaoService;
@@ -25,7 +24,7 @@ public class CaminhaoController {
 		return"caminhao/cadastroCaminhao";
 	}
 	
-	@RequestMapping(value = "/cadastrarCaminhao", method = RequestMethod.POST)
+	@RequestMapping(value = "/cadastrarCaminhao")
 	public String cadastrarCaminhao(@ModelAttribute Caminhao caminhao){
 		caminhao.setStatusCaminhaColeta(StatusCaminhaoColeta.LIVRE);
 		caminhao.setStatusCaminhaoCapacidade(StatusCaminhaoCapacidade.VAZIO);

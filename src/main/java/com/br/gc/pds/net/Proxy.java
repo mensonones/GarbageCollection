@@ -5,9 +5,9 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hamcrest.StringDescription;
 import org.springframework.stereotype.Service;
 
+import com.br.gc.pds.factory.Factory;
 import com.br.gc.pds.factory.MensagemFactory;
 import com.br.gc.pds.model.LixeiraEntity;
 import com.br.gc.pds.model.Lixeiras.ListaLixeira;
@@ -22,14 +22,13 @@ import com.google.protobuf.InvalidProtocolBufferException;
 public class Proxy {
 	private GarbageCollectorCliente cliente;
 	private Mensagem mensagem;
-	private MensagemFactory mensagemFactory;
+	private Factory factory;
 
-	// Metodo Responsavel por enviar mensagem de buscar todas a lixeiras
-	// cadastradas para servidor
 	public List<Lixeira> buscarLixeira() {
-		mensagemFactory = new MensagemFactory();
-		mensagem = mensagemFactory.empacotar("Lixeira", "getLixeiras", new ArrayList<String>());
-	
+		factory = new MensagemFactory("Lixeira", "getLixeiras", new ArrayList<String>());
+		factory.factory();
+		mensagem = (Mensagem) factory.getFactory();
+		
 		try {
 			Mensagem resposta = Mensagem.parseFrom(doOperations(mensagem));
 			List<Lixeira> listaLixeira = ListaLixeira.parseFrom(resposta.getArgumentos(0).toByteArray())
@@ -42,24 +41,18 @@ public class Proxy {
 		return null;
 	}
 
-	// Metodo Responsavel por solicitar calculo da rota de coleta de lixo
-	// A rota é criada apartir de lixeiras que estão cheias e que possuem
-	// StatusColetas como LIVRE
-	public List<Rota> calcularRota(List<String> pontosLixeira,List<LixeiraEntity> lixeiras) {
-		mensagemFactory = new MensagemFactory();
-		
+	public List<Rota> calcularRota(List<String> pontosLixeira, List<LixeiraEntity> lixeiras) {
 		List<String> pontosAlterarStatusColeta = new ArrayList<String>();
-		
-		
 
 		for (LixeiraEntity ponto : lixeiras) {
 			pontosAlterarStatusColeta.add(String.valueOf(ponto.getId()));
 		}
 
 		pontosLixeira.add(ConstantesPontosRota.LIXAO);
+		factory = new MensagemFactory("Rota", "calcularRota", pontosLixeira);
+		factory.factory();
+		mensagem = (Mensagem) factory.getFactory();
 		
-		mensagem = mensagemFactory.empacotar("Rota", "calcularRota", pontosLixeira);
-
 		try {
 			Mensagem resposta = Mensagem.parseFrom(doOperations(mensagem));
 			List<Rota> listaRota = ListaRota.parseFrom(resposta.getArgumentos(0)).getRotaList();
@@ -71,29 +64,24 @@ public class Proxy {
 
 		return null;
 	}
-
-	// Metodo Responsavvel por solicitar calculo da distancia entre duas
-	// localizacoes
+	
 	public Double calcularDistancia(String origem, String destino) throws InvalidProtocolBufferException {
-		mensagemFactory = new MensagemFactory();
 		List<String> pontos = new ArrayList<>();
 
 		pontos.add(origem);
 		pontos.add(destino);
-
-		mensagem = mensagemFactory.empacotar("Distancia", "calcularDistancia", pontos);
-
+		
+		factory = new MensagemFactory("Distancia", "calcularDistancia", pontos);
+		factory.factory();
+		mensagem = (Mensagem) factory.getFactory();
+		
 		Mensagem resposta = Mensagem.parseFrom(doOperations(mensagem));
 
 		String distancia = new String(resposta.getArgumentos(0).toString(Charset.forName("utf-8")));
 		return Double.valueOf(distancia);
 	}
 
-	// Metodo Responsavel por informar para o servidor quais lixeiras devem
-	// mudar o estado de coleta
 	public void alterarStatusColeta(String status, List<String> arguments) throws InvalidProtocolBufferException {
-		mensagemFactory = new MensagemFactory();
-
 		List<String> pontosAlterarStatus = new ArrayList<>();
 
 		pontosAlterarStatus.add(status);
@@ -101,12 +89,13 @@ public class Proxy {
 		for (String l : arguments) {
 			pontosAlterarStatus.add(l);
 		}
-
-		mensagem = mensagemFactory.empacotar("Lixeira", "atualizarStatusColeta", pontosAlterarStatus);
-		Mensagem resposta = Mensagem.parseFrom(doOperations(mensagem));
+		factory = new MensagemFactory("Lixeira", "atualizarStatusColeta", pontosAlterarStatus);
+		factory.factory();
+		mensagem = (Mensagem) factory.getFactory();
+		
+		doOperations(mensagem);
 	}
 
-	// Metodo Responsavel por enviar mensagem para o servidor e receber resposta
 	private byte[] doOperations(Mensagem mensagem) {
 		try {
 

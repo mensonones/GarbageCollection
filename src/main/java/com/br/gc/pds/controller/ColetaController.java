@@ -1,6 +1,8 @@
 package com.br.gc.pds.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.br.gc.pds.factory.ColetaFactory;
-import com.br.gc.pds.factory.RotaFactory;
+import com.br.gc.pds.factory.Factory;
+import com.br.gc.pds.factory.GeradorRota;
 import com.br.gc.pds.model.Caminhao;
 import com.br.gc.pds.model.ColetaEntity;
 import com.br.gc.pds.model.LixeiraEntity;
@@ -23,8 +26,8 @@ import com.br.gc.pds.service.ColetaService;
 import com.br.gc.pds.service.LixeiraService;
 import com.br.gc.pds.service.ModificadorStatusColeta;
 import com.br.gc.pds.util.ConstantesPontosRota;
-import com.br.gc.pds.util.DadosPDF;
 import com.br.gc.pds.util.MapStatusColeta;
+import com.br.gc.pds.util.RelatorioRota;
 import com.br.gc.pds.util.StatusCaminhaoColeta;
 import com.br.gc.pds.util.ValorStatusColeta;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -39,12 +42,12 @@ public class ColetaController {
 	CaminhaoService caminhaoService;
 	@Autowired
 	LixeiraService lixeiraService;
-	private ColetaFactory coletaFactory;
+	private Factory factory;
 	private ColetaEntity coleta;
 	private Proxy proxy;
-	private RotaFactory rotaFactory;
+	private GeradorRota geradorRota;
 
-	@RequestMapping(value ="/alterarStatusColeta/{coleta_id}+{status}", method = RequestMethod.GET)
+	@RequestMapping(value ="/alterarStatusColeta/{coleta_id}+{status}")
 	public String alterarStatusColeta(@PathVariable("coleta_id") Long id,
 			@PathVariable("status") String status) throws InvalidProtocolBufferException {
 		proxy = new Proxy();
@@ -52,8 +55,7 @@ public class ColetaController {
 		MapStatusColeta map = new MapStatusColeta();
 
 		ModificadorStatusColeta modificador = (ModificadorStatusColeta) map.getInstance(status);
-		ColetaEntity coletaAtualizada = modificador.atulaizarStatusColeta(proxy, coleta);
-		coletaService.salvar(coletaAtualizada);
+		modificador.atulaizarStatusColeta(proxy,coleta,coletaService);
 		return "redirect:/listarColeta";
 	}
 
@@ -81,15 +83,19 @@ public class ColetaController {
 	@RequestMapping(value = "/gerarColeta/{id_caminhao}", method = RequestMethod.GET)
 	public String gerarColeta(@PathVariable Long id_caminhao, Model model) throws InvalidProtocolBufferException {
 		proxy = new Proxy();
-		rotaFactory = new RotaFactory();
+		geradorRota = new GeradorRota();
+		Date data = new Date();
+		RelatorioRota relatorio = new RelatorioRota();
+		SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		List<String> localizacoesLixeiras = new ArrayList<String>();
 		List<Lixeira> lixeiras = proxy.buscarLixeira();
 
 		Caminhao caminhao = caminhaoService.buscarCaminhao(id_caminhao);
 		localizacoesLixeiras.add(ConstantesPontosRota.EMPRESA);
-		coletaFactory = new ColetaFactory();
+		factory = new ColetaFactory(lixeiras,caminhao);
 
-		coleta = coletaFactory.factoryLixeirasColeta(lixeiras, caminhao);
+		factory.factory();
+		coleta = (ColetaEntity) factory.getFactory();
 
 		if (coleta.getLixeiras().isEmpty()) {
 			return "login-error";
@@ -98,19 +104,18 @@ public class ColetaController {
 		caminhao.setStatusCaminhaColeta(StatusCaminhaoColeta.ROTA);
 		coleta.setStatusColeta(ValorStatusColeta.ANDAMENTO);
 		coleta.setCaminhao(caminhao);
+		
 		for (LixeiraEntity lixeira : coleta.getLixeiras()) {
 			lixeiraService.salvar(lixeira);
 			localizacoesLixeiras.add(lixeira.getLocalizacao());
 		}
-		List<String> rotaLixeiras = rotaFactory.gerarRota(localizacoesLixeiras);
-
+		
+		List<String> rotaLixeiras = geradorRota.gerarRota(localizacoesLixeiras);
+		coleta.setDataColeta(formatador.format(data));
 		coletaService.salvar(coleta);
 
 		List<Rota> melhorRota = proxy.calcularRota(rotaLixeiras, coleta.getLixeiras());
-
-		DadosPDF pdf = new DadosPDF();
-		pdf.gerarRelatorioRota(coleta, melhorRota);
-
+		relatorio.gerarRelatorioRota(coleta, melhorRota);
 		model.addAttribute("rotas", melhorRota);
 		return "rota/verRota";
 	}

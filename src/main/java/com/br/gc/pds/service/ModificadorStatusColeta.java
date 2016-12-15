@@ -5,5 +5,5 @@ import com.br.gc.pds.net.Proxy;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public interface ModificadorStatusColeta {
-	public ColetaEntity atulaizarStatusColeta(Proxy proxy,ColetaEntity coleta) throws InvalidProtocolBufferException;
+	public void atulaizarStatusColeta(Proxy proxy,ColetaEntity coleta,ColetaService coletaService) throws InvalidProtocolBufferException;
 }

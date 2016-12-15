@@ -7,12 +7,20 @@ import com.br.gc.pds.model.ColetaEntity;
 import com.br.gc.pds.model.LixeiraEntity;
 import com.br.gc.pds.model.Lixeiras.Lixeira;
 
-public class ColetaFactory {
+public class ColetaFactory implements Factory {
 
 	private LixeiraFactory lixeiraFactory;
 	private ColetaEntity coleta;
+	private List<Lixeira> lixeirasProtocol;
+	private Caminhao caminhao;
 	
-	public ColetaEntity factoryLixeirasColeta(List<Lixeira> lixeirasProtocol, Caminhao caminhao) {
+	public ColetaFactory(List<Lixeira> lixeirasProtocol,Caminhao caminhao) {
+		this.lixeirasProtocol = lixeirasProtocol;
+		this.caminhao = caminhao;
+	}
+	
+	@Override
+	public void factory() {
 		lixeiraFactory = new LixeiraFactory();
 		double limiteCarga = caminhao.getCapacidadeTotal();
 		coleta = new ColetaEntity();
@@ -26,7 +34,10 @@ public class ColetaFactory {
 				coleta.getLixeiras().add(lixeira);
 			}
 		}
+	}
 
+	@Override
+	public Object getFactory() {
 		return coleta;
 	}
 }
